@@ -17,6 +17,7 @@
      apt: name=apache2 state=latest
      notify: 
        - restart apache2
+       
    - name: Install MySQL (really MariaDB now)
      apt: name=mariadb-server state=latest
 
@@ -29,8 +30,8 @@
    - name: Install apache2 php module
      apt: name=libapache2-mod-php state=latest
 
-   - name: Install php-mysql
-     apt: name=php-mysql state=latest
+#   - name: Install php-mysql
+#    apt: name=php-mysql state=latest
 
 #MySQL config
    - name: Create MySQL Database
