@@ -1,0 +1,92 @@
+---
+- hosts: localhost
+  become: root
+# we can put variables here too that work in addition to what is in group_vars
+  ignore_errors: yes
+  vars:
+     auser: hellothere
+     ansible_ssh_user: root
+     wpdbname: rttdbname
+     wpdbuser: rttdbuser
+     wpdbpass: rttinsecurepass
+     wpdbhost: localhost
+     wppath: "/var/www/html"
+
+  tasks:
+   - name: Install apache2
+     apt: name=apache2 state=latest
+     notify: 
+       - restart apache2
+   - name: Install MySQL (really MariaDB now)
+     apt: name=mariadb-server state=latest
+
+   - name: Install MySQL python module
+     apt: name=python-mysqldb state=latest
+
+
+   - name: Install php
+     apt: name=php state=latest
+
+   - name: Install apache2 php module
+     apt: name=libapache2-mod-php state=latest
+
+   - name: Install php-mysql
+     apt: name=php-mysql state=latest
+
+#MySQL config
+   - name: Create MySQL Database
+     mysql_db:
+       name: "{{wpdbname}}"
+#     ignore_errors: yes
+
+   - name: Create DB user/pass and give the user all privileges
+     mysql_user:
+       name: "{{wpdbuser}}"
+       password: "{{wpdbpass}}"
+       priv: '{{wpdbname}}.*:ALL'
+       state: present
+#     ignore_errors: yes
+
+   - name: Copy index test page
+     template:
+              src: "files/index.html.j2"
+              dest: "/var/www/html/index.html"
+
+   - name: enable Apache2 service
+     service: name=apache2 enabled=yes
+
+#Wordpress stuff
+   - name: Download and tar -zxvf wordpress
+     unarchive:
+        src: https://wordpress.org/latest.tar.gz
+        remote_src: yes
+        dest: "{{ wppath }}"
+        extra_opts: [--strip-components=1]
+        #creates: "{{ wppath }}"
+
+   - name: Set permissions
+     file:
+        path: "{{wppath}}"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+ 
+   - name: copy the config file wp-config-sample.php to wp-config.php so we can edit it
+     command: mv {{wppath}}/wp-config-sample.php {{wppath}}/wp-config.php #creates={{wppath}}/wp-config.php
+     become: yes
+ 
+   - name: Update WordPress config file
+     lineinfile:
+        path: "{{wppath}}/wp-config.php"
+        regexp: "{{item.regexp}}"
+        line: "{{item.line}}"
+     with_items:
+       - {'regexp': "define\\( 'DB_NAME', '(.)+' \\);", 'line': "define( 'DB_NAME', '{{wpdbname}}' );"}
+       - {'regexp': "define\\( 'DB_USER', '(.)+' \\);", 'line': "define( 'DB_USER', '{{wpdbuser}}' );"}
+       - {'regexp': "define\\( 'DB_PASSWORD', '(.)+' \\);", 'line': "define( 'DB_PASSWORD', '{{wpdbpass}}' );"}
+     
+
+  handlers:
+  - name: restart apache2
+    service: name=apache2 state=restarted
