@@ -23,7 +23,6 @@
    - name: Install MySQL python module
      apt: name=python-mysqldb state=latest
 
-   - name: Install Python PIP
    - name: Install Python 
      apt: name=python3-pip state=latest
 
