@@ -23,9 +23,9 @@
    - name: Install MySQL python module
      apt: name=python-mysqldb state=latest
 
-
-   - name: Install php
-     apt: name=php state=latest
+   - name: Install Python PIP
+   - name: Install Python 
+     apt: name=python3-pip state=latest
 
    - name: Install apache2 php module
      apt: name=libapache2-mod-php state=latest
