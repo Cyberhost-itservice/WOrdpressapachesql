@@ -12,5 +12,4 @@ Download WP and Config \
 \
 MYSQL Config \
 \
-When Script finish is go to Webbrowser and give this http://HERE-YOUR-IP/ and start the Wordpress Installation. \
-
+When Script finish is go to Webbrowser and give this http://HERE-YOUR-IP/ and start the Wordpress Installation. 
