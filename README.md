@@ -9,6 +9,7 @@ Install Packages: \
 Apache2 \
 MAriadb / Mysql \
 PHP \
+for phpmyadmin : install separat \
 \
 Download WP and Config \
 \
