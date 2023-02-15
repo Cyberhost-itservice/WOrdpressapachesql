@@ -1,7 +1,7 @@
 Install new Wordpress on a clean Ubuntu 20.04 Desktop or Server installed  \
 you must not install LAMP \
 \
-create a file and copy the install.sh and chmod or baash and start \ 
+create a file and copy the install.sh and chmod or bash and start 
 \
 The Sript make: \
  \
