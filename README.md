@@ -1,4 +1,4 @@
-Install new Wordpress on a clean Ubuntu 20.04 Desktop or Server installed  \
+Install new Wordpress on a clean Ubuntu 20.04 Desktop or Server  \
 you must not install LAMP \
 \
 create a file and copy the install.sh and chmod or bash and start 
