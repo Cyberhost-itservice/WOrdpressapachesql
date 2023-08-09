@@ -35,8 +35,10 @@ echo "[client]">>/root/.my.cnf
 echo "user=root">>/root/.my.cnf
 echo "password="$mysqlrootpass>>/root/.my.cnf
 ####Install PHP
-apt -y install php php-bz2 php-mysqli php-curl php-gd php-intl php-common php-mbstring php-xml
-
+#apt -y install php php-bz2 php-mysqli php-curl php-gd php-intl php-common php-mbstring php-xml
+apt -y install php8.2 php8.2-cli php-8.2{bz2,curl,mbstring,intl}
+apt -y install php8.2-fpm
+a2enconf php8.2-fpm
 sed -i '0,/AllowOverride\ None/! {0,/AllowOverride\ None/ s/AllowOverride\ None/AllowOverride\ All/}' /etc/apache2/apache2.conf #Allow htaccess usage
 
 systemctl restart apache2
